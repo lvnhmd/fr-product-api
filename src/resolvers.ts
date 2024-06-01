@@ -1,4 +1,4 @@
-import Product from './models/Product';
+import Product, { IProduct } from './models/Product';
 import Producer from './models/Producer';
 
 export const root = {
@@ -12,5 +12,16 @@ export const root = {
   },
   productsByProducer: async ({ producerId }: { producerId: string }) => {
     return await Product.find({ producerId }).exec();
+  },
+  createProducts: async ({ products }: { products: IProduct[] }) => {
+    return await Product.insertMany(products);
+  },
+  updateProduct: async ({ _id, input }: { _id: string, input: IProduct }) => {
+    const updatedProduct = await Product.findByIdAndUpdate(_id, input, { new: true });
+    return updatedProduct;
+  },
+  deleteProducts: async ({ ids }: { ids: string[] }) => {
+    await Product.deleteMany({ _id: { $in: ids } });
+    return true;
   }
 };

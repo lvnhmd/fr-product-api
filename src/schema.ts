@@ -20,4 +20,16 @@ export const schema = buildSchema(`
     product(_id: ID!): Product
     productsByProducer(producerId: ID!): [Product]
   }
+
+  input ProductInput {
+    vintage: String!
+    name: String!
+    producerId: ID!
+  }
+
+  type Mutation {
+    createProducts(products: [ProductInput]!): [Product]
+    updateProduct(_id: ID!, input: ProductInput!): Product
+    deleteProducts(ids: [ID]!): Boolean
+  }
 `);
