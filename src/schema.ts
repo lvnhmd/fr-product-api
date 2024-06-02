@@ -31,5 +31,6 @@ export const schema = buildSchema(`
     createProducts(products: [ProductInput]!): [Product]
     updateProduct(_id: ID!, input: ProductInput!): Product
     deleteProducts(ids: [ID]!): Boolean
+    upsertProductsFromCSV: Boolean
   }
 `);
