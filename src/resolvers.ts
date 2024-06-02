@@ -1,5 +1,6 @@
-import Product, { IProduct } from './models/Product';
-import Producer from './models/Producer';
+import Product, { IProduct } from "./models/Product";
+import Producer, { IProducer } from "./models/Producer";
+import { upsertProductsFromCSV } from "./upsertProductsFromCSV";
 
 export const root = {
   product: async ({ _id }: { _id: string }) => {
@@ -16,12 +17,18 @@ export const root = {
   createProducts: async ({ products }: { products: IProduct[] }) => {
     return await Product.insertMany(products);
   },
-  updateProduct: async ({ _id, input }: { _id: string, input: IProduct }) => {
-    const updatedProduct = await Product.findByIdAndUpdate(_id, input, { new: true });
+  updateProduct: async ({ _id, input }: { _id: string; input: IProduct }) => {
+    const updatedProduct = await Product.findByIdAndUpdate(_id, input, {
+      new: true
+    });
     return updatedProduct;
   },
   deleteProducts: async ({ ids }: { ids: string[] }) => {
     await Product.deleteMany({ _id: { $in: ids } });
+    return true;
+  },
+  upsertProductsFromCSV: async () => {
+    process.nextTick(upsertProductsFromCSV);
     return true;
   }
 };
